@@ -1,0 +1,16 @@
+[project]
+name = "bookshelf"
+version = "1.0.0"
+description = "Книжная полка, финальный проект курса по Flask"
+requires-python = ">=3.9"
+dependencies = ["flask>=3.0"]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

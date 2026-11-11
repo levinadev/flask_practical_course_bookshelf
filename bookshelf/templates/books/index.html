@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Мои книги{% endblock %}
+{% block content %}
+<div class="page-head">
+  <h1>Мои книги</h1>
+  <a class="button" href="{{ url_for('books.create') }}">+ Добавить книгу</a>
+</div>
+
+<nav class="filters">
+  <a href="{{ url_for('index') }}" class="{{ 'active' if not current_status }}">Все</a>
+  {% for key, label in statuses.items() %}
+    <a href="{{ url_for('index', status=key) }}" class="{{ 'active' if current_status == key }}">{{ label }}</a>
+  {% endfor %}
+</nav>
+
+{% if books %}
+  <div class="grid">
+    {% for book in books %}
+      <article class="card book">
+        <span class="badge badge-{{ book['status'] }}">{{ statuses[book['status']] }}</span>
+        <h2>{{ book['title'] }}</h2>
+        <p class="author">{{ book['author'] }}</p>
+        {% if book['rating'] %}<p class="stars">{{ '★' * book['rating'] }}{{ '☆' * (5 - book['rating']) }}</p>{% endif %}
+        {% if book['note'] %}<p class="note">{{ book['note'] }}</p>{% endif %}
+        <div class="actions">
+          <a href="{{ url_for('books.update', book_id=book['id']) }}">Изменить</a>
+          <form method="post" action="{{ url_for('books.delete', book_id=book['id']) }}" onsubmit="return confirm('Удалить книгу?')">
+            <button class="link danger" type="submit">Удалить</button>
+          </form>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty card">
+    <p>Здесь пока пусто. Добавьте первую книгу на полку!</p>
+    <a class="button" href="{{ url_for('books.create') }}">Добавить книгу</a>
+  </div>
+{% endif %}
+{% endblock %}

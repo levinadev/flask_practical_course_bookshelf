@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% endblock %}, Книжная полка</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="topbar">
+    <a class="logo" href="{{ url_for('index') }}">📚 Книжная полка</a>
+    <nav>
+      {% if g.user %}
+        <a href="{{ url_for('index') }}">Мои книги</a>
+        <a href="{{ url_for('books.create') }}">Добавить</a>
+        <a href="{{ url_for('books.stats') }}">Статистика</a>
+        <span class="user">{{ g.user['username'] }}</span>
+        <a href="{{ url_for('auth.logout') }}">Выйти</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}">Войти</a>
+        <a class="button" href="{{ url_for('auth.register') }}">Регистрация</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="container">
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+      <div class="flash flash-{{ category }}">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
