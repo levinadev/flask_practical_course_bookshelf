@@ -27,6 +27,7 @@ def create_app(test_config=None):
     app.register_blueprint(books.bp)
     app.register_blueprint(api.bp)
     app.add_url_rule("/", endpoint="index")
+    app.json.ensure_ascii = False
 
     @app.errorhandler(403)
     def forbidden(error):
